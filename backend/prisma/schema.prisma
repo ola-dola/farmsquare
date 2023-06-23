@@ -23,7 +23,7 @@ model User {
   accountType    ACCOUNT_TYPE
   password       String
   bio            String?      @db.VarChar(255)
-  followersCount Int
+  followersCount Int          @default(0)
   posts          Post[]
   followedBy     Follows[]    @relation("following")
   following      Follows[]    @relation("follower")

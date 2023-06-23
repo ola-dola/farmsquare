@@ -50,8 +50,8 @@ model Post {
   createdAt  DateTime  @default(now())
   updatedAt  DateTime  @updatedAt
   content    String
-  totalLikes Int
-  photos     String[]
+  totalLikes Int       @default(0)
+  photo      String?
   postType   POST_TYPE @default(REGULAR)
   author     User      @relation(fields: [authorId], references: [id])
   authorId   Int

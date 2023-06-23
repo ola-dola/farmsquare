@@ -4,7 +4,7 @@ import helmet from "helmet";
 import { createNewUser, signin } from "./handlers/auth";
 import router from "./router";
 import { signInSchema, registrationSchema } from "./utils/validators";
-import { checkIfRegValueTaken, validateObjects } from "./utils/middlewares";
+import { checkIfRegValueTaken, protectedRoute, validateObjects } from "./utils/middlewares";
 
 const server = express();
 
@@ -21,14 +21,14 @@ server.post(
 
 server.post('/auth/login', validateObjects(signInSchema), signin)
 
-server.use("/api/v1", router)
+server.use("/api/v1", protectedRoute, router)
 
 server.get("/", (req, res) => {
   res.send({ message: "Hello world!" });
 });
 
 server.use((err, req, res, next) => {
-  return res.status(err.statusCode).json({ message: "Error!", error: err });
+  return res.status(500).json({ message: "Error!", error: err.message });
 })
 
 

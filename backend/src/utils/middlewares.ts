@@ -1,4 +1,5 @@
 import prisma from "../db";
+import jwt from "jsonwebtoken";
 
 export const validateObjects = (schema) => async (req, res, next) => {
   try {
@@ -41,5 +42,29 @@ export const checkIfRegValueTaken = async (req, res, next) => {
     next();
   } catch (err) {
     next(err);
+  }
+};
+
+export const protectedRoute = (req, res, next) => {
+  const bearer = req.headers.authorization;
+
+  if (!bearer) {
+    res.status(401).json({ message: "Not authorized" });
+    return;
+  }
+
+  const [, token] = bearer.split(" ");
+  if (!token) {
+    res.status(401).json({ message: "Not authorized" });
+    return;
+  }
+
+  try {
+    const payload = jwt.verify(token, process.env.JWT_SECRET);
+    req.user = payload;
+    next();
+    return;
+  } catch (err) {
+    next(err)
   }
 };

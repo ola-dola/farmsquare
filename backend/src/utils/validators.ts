@@ -18,3 +18,8 @@ export const signInSchema = Joi.object({
   password: Joi.string().required(),
 })
 
+export const createPostSchema = Joi.object({
+  content: Joi.string().required(),
+  photo: Joi.string(),
+})
+

@@ -1,14 +1,14 @@
 import { Router } from "express"
+import { createPost } from "./handlers/posts";
+import { validateObjects } from "./utils/middlewares";
+import { createPostSchema } from "./utils/validators";
 
 const router = Router()
 
 /**
  * Posts
  */
-// router.get('/post', getPosts)
-// router.get('/post/:id', getOnePost)
-// router.post('/post', createPost)
-// router.delete('/post/:id', deletePost)
+router.post("/posts/create", validateObjects(createPostSchema), createPost);
 
 /**
  * Comments

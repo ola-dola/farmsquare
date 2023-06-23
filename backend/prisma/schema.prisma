@@ -1,0 +1,79 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum ACCOUNT_TYPE {
+  FARMER
+  BUYER
+}
+
+model User {
+  id             Int          @id @default(autoincrement())
+  email          String       @unique
+  username       String       @unique
+  name           String
+  accountType    ACCOUNT_TYPE
+  password       String
+  bio            String?      @db.VarChar(255)
+  followersCount Int
+  posts          Post[]
+  followedBy     Follows[]    @relation("following")
+  following      Follows[]    @relation("follower")
+  likes          Likes[]
+  Comment        Comment[]
+}
+
+model Follows {
+  follower    User @relation("follower", fields: [followerId], references: [id])
+  followerId  Int
+  following   User @relation("following", fields: [followingId], references: [id])
+  followingId Int
+
+  @@id([followerId, followingId])
+}
+
+enum POST_TYPE {
+  REGULAR
+  LISTING
+}
+
+model Post {
+  id         Int       @id @default(autoincrement())
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+  content    String
+  totalLikes Int
+  photos     String[]
+  postType   POST_TYPE @default(REGULAR)
+  author     User      @relation(fields: [authorId], references: [id])
+  authorId   Int
+  likes      Likes[]
+  Comment    Comment[]
+}
+
+model Likes {
+  postId    Int
+  post      Post @relation(fields: [postId], references: [id])
+  likedById Int
+  user      User @relation(fields: [likedById], references: [id])
+
+  @@id([postId, likedById])
+}
+
+model Comment {
+  postId   Int
+  post     Post   @relation(fields: [postId], references: [id])
+  authorId Int
+  user     User   @relation(fields: [authorId], references: [id])
+  comment  String
+
+  @@id([postId, authorId])
+}

@@ -28,7 +28,8 @@ server.get("/", (req, res) => {
 });
 
 server.use((err, req, res, next) => {
-  return res.status(500).json({ message: "Error!", error: err.message });
+  console.error(err);
+  return res.status(500).json({ message: "Unexpected error" });
 })
 
 

@@ -68,3 +68,52 @@ export const protectedRoute = (req, res, next) => {
     next(err)
   }
 };
+
+export const checkIfAlreadyFollowing = async (req, res, next) => {
+  try {
+    const user = await prisma.follows.findUnique({
+      where: {
+        followerId_followingId: {
+          followerId: +req.user.id,
+          followingId: +req.body.followingId,
+        },
+      },
+    })
+
+    if (user) {
+      res.status(409).json({ message: "Already following user" });
+      return
+    }
+
+    next()
+  } catch (err) {
+    next(err)
+  }
+}
+export const checkForSelfFollowingAttempt = (req, res, next) => {
+  if (req.user.id === req.body.followingId) {
+    res.status(403).json({ message: "You cannot follow yourself." });
+    return
+  }
+
+  next();
+}
+
+export const checkIfUserExists = async (req, res, next) => {
+  try {
+    const user = await prisma.user.findFirst({
+      where: {
+        id: +req.body.followingId
+      }
+    });
+
+    if (!user) {
+      res.status(400).json({ message: "User to follow does not exist" });
+      return
+    }
+
+    next();
+  } catch (err) {
+    next(err);
+  }
+}

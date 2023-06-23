@@ -23,3 +23,7 @@ export const createPostSchema = Joi.object({
   photo: Joi.string(),
 })
 
+export const followUserSchema = Joi.object({
+  followingId: Joi.number().required()
+})
+

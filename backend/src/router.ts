@@ -1,7 +1,8 @@
 import { Router } from "express"
 import { createPost } from "./handlers/posts";
-import { validateObjects } from "./utils/middlewares";
-import { createPostSchema } from "./utils/validators";
+import { checkForSelfFollowingAttempt, checkIfAlreadyFollowing, checkIfUserExists, validateObjects } from "./utils/middlewares";
+import { createPostSchema, followUserSchema } from "./utils/validators";
+import { followUser } from "./handlers/follows";
 
 const router = Router()
 
@@ -11,7 +12,13 @@ const router = Router()
 router.post("/posts/create", validateObjects(createPostSchema), createPost);
 
 /**
- * Comments
+ * Follows
  */
+
+router.post(
+  "/follows",
+  [validateObjects(followUserSchema), checkForSelfFollowingAttempt, checkIfUserExists, checkIfAlreadyFollowing],
+  followUser
+);
 
 export default router;

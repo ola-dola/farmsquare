@@ -5,20 +5,28 @@ import {
   FormLabel,
   Button,
   Input,
+  Select,
+  Textarea,
 } from "@chakra-ui/react";
-
-import "./login.scss";
 import { useState } from "react";
 
+import "./register.scss";
 import useCustomToast from "../hooks/useCustomToast";
+
+const initialState = {
+  email: "",
+  username: "",
+  name: "",
+  accountType: "FARMER",
+  password: "",
+  bio: "",
+};
 
 export default function Login() {
   const navigate = useNavigate();
-  const [formValues, setFormValues] = useState({
-    username: "",
-    password: "",
-  });
   const customToast = useCustomToast();
+
+  const [formValues, setFormValues] = useState({ ...initialState });
 
   const handleChange = (e) => {
     setFormValues((prevState) => {
@@ -32,18 +40,14 @@ export default function Login() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const url = `${import.meta.env.VITE_BACKEND_URL}/auth/login`;
+    const url = `${import.meta.env.VITE_BACKEND_URL}/auth/register`;
 
     try {
       const res = await axios.post(url, formValues);
 
-      localStorage.setItem("accessToken", res.data.token);
-      setFormValues({
-        username: "",
-        password: "",
-      });
+      setFormValues({ ...initialState });
 
-      navigate("/feed");
+      navigate("/login");
       customToast("success", res.data?.message);
     } catch (err) {
       const msg = err.response
@@ -63,9 +67,19 @@ export default function Login() {
       </header>
 
       <section className="form__wrapper">
-        <h3>Login to your account</h3>
+        <h3>Register your account</h3>
 
         <form onSubmit={handleSubmit}>
+          <FormControl mb={4}>
+            <FormLabel>Name</FormLabel>
+            <Input
+              type="text"
+              name="name"
+              onChange={handleChange}
+              value={formValues.name}
+            />
+          </FormControl>
+
           <FormControl mb={4}>
             <FormLabel>Username</FormLabel>
             <Input
@@ -75,13 +89,46 @@ export default function Login() {
               value={formValues.username}
             />
           </FormControl>
-          <FormControl mb={6}>
+
+          <FormControl mb={4}>
+            <FormLabel>Email</FormLabel>
+            <Input
+              type="email"
+              name="email"
+              onChange={handleChange}
+              value={formValues.email}
+            />
+          </FormControl>
+
+          <FormControl mb={4}>
+            <FormLabel>Account Type</FormLabel>
+            <Select
+              value={formValues.accountType}
+              placeholder="Select account type"
+              onChange={handleChange}
+              name="accountType"
+            >
+              <option value="FARMER">Farmer</option>
+              <option value="BUYER">Buyer</option>
+            </Select>
+          </FormControl>
+
+          <FormControl mb={4}>
             <FormLabel>Password</FormLabel>
             <Input
               type="password"
               name="password"
               onChange={handleChange}
               value={formValues.password}
+            />
+          </FormControl>
+
+          <FormControl mb={6}>
+            <FormLabel>Bio</FormLabel>
+            <Textarea
+              name="bio"
+              onChange={handleChange}
+              value={formValues.bio}
             />
           </FormControl>
 
@@ -92,7 +139,7 @@ export default function Login() {
             h={12}
             type="submit"
           >
-            Login
+            Create Account
           </Button>
         </form>
       </section>

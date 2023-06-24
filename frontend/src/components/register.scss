@@ -1,0 +1,20 @@
+.login__wrapper {
+  padding: 2rem;
+  width: 100%;
+
+  .form__wrapper {
+    margin: 3rem auto;
+    max-width: 450px;
+
+    h3 {
+      text-align: center;
+      color: #101012;
+      font-size: 2rem;
+      line-height: 133%;
+    }
+
+    form {
+      margin-top: 3rem;
+    }
+  }
+}

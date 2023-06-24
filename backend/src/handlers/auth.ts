@@ -28,6 +28,11 @@ export const signin = async (req, res, next) => {
       }
     });
 
+    if (!user) {
+      res.status(401).json({ message: "User not found" });
+      return;
+    }
+
     const isValid = await comparePasswords(req.body.password, user.password);
 
     if (!isValid) {

@@ -4,6 +4,7 @@ import "./App.css";
 import Home from "./components/Home";
 import Login from "./components/Login";
 import Register from "./components/Register";
+import Feeds from "./components/Feeds";
 
 function App() {
   return (
@@ -12,6 +13,7 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Register />} />
+        <Route path="/feed" element={<Feeds />} />
       </Routes>
     </BrowserRouter>
   );

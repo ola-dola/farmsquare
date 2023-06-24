@@ -28,7 +28,7 @@ export const fetchMyFeed = async (req, res, next) => {
     const posts = await prisma.post.findMany({
       where: {
         author: {
-          id: { in: [...following.following.map((user) => user.followingId)] },
+          id: { in: [...following.following.map((user) => user.followingId), req.user.id] },
         },
       }
     });

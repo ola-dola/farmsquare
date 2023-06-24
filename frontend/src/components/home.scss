@@ -1,0 +1,38 @@
+.home__wrapper {
+  background-image: url("../assets/home_banner.jpg");
+  background-size: cover;
+  padding: 3rem;
+  text-align: center;
+
+  h1 {
+    font-size: 2rem;
+  }
+
+  .links {
+    margin-top: 25vh;
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    justify-content: center;
+  }
+
+  a {
+    color: #fff;
+    padding: 12px 32px;
+    border-radius: 12px;
+    font-weight: 700;
+
+    &:hover {
+      color: #fff;
+      opacity: 0.85;
+    }
+  }
+
+  .login {
+    background-color: #539f55;
+  }
+
+  .register {
+    background-color: #214022;
+  }
+}

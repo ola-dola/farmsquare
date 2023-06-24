@@ -1,14 +1,14 @@
-import { useState } from "react";
-import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import "./App.css";
+
+import Home from "./components/Home";
 
 function App() {
   return (
     <BrowserRouter>
-      <header>
-        <Link to="/">Adopt Me!</Link>
-      </header>
-      <Routes>{/* <Route path="/" element={<SearchParams />} /> */}</Routes>
+      <Routes>
+        <Route path="/" element={<Home />} />
+      </Routes>
     </BrowserRouter>
   );
 }
